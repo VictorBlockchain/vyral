@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  walletAddress   String   @unique
+  username        String?
+  vyralBalance    Float    @default(0)
+  isAdmin         Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  createdChallenges  Challenge[]
+  submissions        Submission[]
+  votes              Vote[]
+  admin              Admin?
+}
+
+model Challenge {
+  id              String   @id @default(cuid())
+  title           String
+  description     String
+  rewardAmount    Float
+  tokenMint       String
+  endDate         DateTime
+  status          ChallengeStatus @default(ACTIVE)
+  creatorId       String
+  creator         User     @relation(fields: [creatorId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Escrow wallet
+  escrowPublicKey  String?
+  escrowSecretKey  String?
+  
+  // Winner & payout tracking
+  winnerId         String?
+  payoutTxSignature String?
+  payoutStatus     PayoutStatus? @default(PENDING)
+  payoutAt         DateTime?
+  
+  // Admin tracking
+  closedBy         String?
+  closedAt         DateTime?
+  cancellationReason String?
+  
+  submissions     Submission[]
+  transactions    Transaction[]
+  winnerSubmission Submission? @relation("WinnerSubmission")
+}
+
+model Submission {
+  id              String   @id @default(cuid())
+  challengeId     String
+  challenge       Challenge @relation(fields: [challengeId], references: [id])
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  videoUrl        String
+  description     String?
+  voteCount       Int      @default(0)
+  status          SubmissionStatus @default(PENDING)
+  createdAt       DateTime @default(now())
+  
+  votes           Vote[]
+  winningChallenge Challenge? @relation("WinnerSubmission", fields: [id], references: [winnerId])
+  
+  @@unique([challengeId, userId])
+}
+
+model Vote {
+  id              String   @id @default(cuid())
+  submissionId    String
+  submission      Submission @relation(fields: [submissionId], references: [id])
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+  
+  @@unique([submissionId, userId])
+}
+
+model Admin {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  role            AdminRole @default(ADMIN)
+  permissions     String[]
+  createdAt       DateTime @default(now())
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  challengeId     String
+  challenge       Challenge @relation(fields: [challengeId], references: [id])
+  type            TransactionType
+  amount          Float
+  fromAddress     String
+  toAddress       String
+  txSignature     String
+  status          TransactionStatus @default(PENDING)
+  createdAt       DateTime @default(now())
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  WINNER
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+}
+
+enum TransactionType {
+  ESCROW_DEPOSIT
+  PAYOUT
+  REFUND
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}

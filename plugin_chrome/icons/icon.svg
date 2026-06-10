@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#fe2c55" rx="20"/>
+  <text x="64" y="80" font-family="Arial" font-size="72" fill="white" text-anchor="middle">👤</text>
+  <text x="64" y="115" font-family="Arial" font-size="20" fill="white" text-anchor="middle" font-weight="bold">UNFOLLOW</text>
+</svg>

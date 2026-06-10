@@ -1,0 +1,24 @@
+{
+  "canisters": {
+    "vyral_backend": {
+      "main": "canisters/vyral_backend/src/main.mo",
+      "type": "motoko"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "provider": "https://icp-api.io"
+    }
+  },
+  "version": 1
+}

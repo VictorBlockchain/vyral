@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vyral - Growth OS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── THEME VARIABLES (Matching Vyral Site) ────────────────────────────── */
+    :root {
+      --color-bg: #F4F7FA;
+      --color-white: #FFFFFF;
+      --color-black: #2D2D2D;
+      --color-gray: #E0E0E0;
+      --color-primary: #33CCFF;      /* Sky Blue */
+      --color-secondary: #FF6699;    /* Hot Pink */
+      --color-accent: #FFCC33;       /* Sunny Yellow */
+      --color-success: #33CC66;      /* Fresh Green */
+      --color-danger: #FF3366;       /* Red */
+      --color-purple: #CC99FF;       /* Lavender */
+      --font-display: 'Fredoka', sans-serif;
+      --font-body: 'Nunito', sans-serif;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --border-thick: 3px solid var(--color-black);
+      --shadow-hard: 5px 5px 0px var(--color-black);
+      --shadow-hard-hover: 7px 7px 0px var(--color-black);
+    }
+
+    /* ── RESET & BASE ───────────────────────────────────────────────────────── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 500px;
+      font-family: var(--font-body);
+      background-color: var(--color-bg);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    body {
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      padding: 20px;
+      border-bottom: var(--border-thick);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-icon {
+      font-size: 28px;
+    }
+
+    .header-content h1 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--color-white);
+      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content p {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 2px 0 0 0;
+    }
+
+    /* ── CONTAINER ──────────────────────────────────────────────────────────── */
+    .container {
+      padding: 20px;
+    }
+
+    /* ── TABS ───────────────────────────────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: var(--border-thick);
+      padding-bottom: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--color-black);
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tab-btn.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+      background: rgba(51, 204, 255, 0.05);
+    }
+
+    .tab-btn:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ── STATUS SECTION ─────────────────────────────────────────────────────── */
+    .status-card {
+      background: var(--color-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-gray);
+    }
+
+    .status-item:last-child {
+      border-bottom: none;
+    }
+
+    .status-label {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--color-black);
+      letter-spacing: 0.5px;
+    }
+
+    .status-value {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--color-primary);
+    }
+
+    /* ── BALANCE CARD ───────────────────────────────────────────────────────── */
+    .balance-card {
+      background: linear-gradient(135deg, var(--color-accent) 0%, #FFD700 100%);
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .balance-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-black);
+      opacity: 0.8;
+      letter-spacing: 0.5px;
+    }
+
+    .balance-amount {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--color-black);
+      margin: 4px 0;
+    }
+
+    .balance-unit {
+      font-size: 12px;
+      color: var(--color-black);
+      opacity: 0.7;
+    }
+
+    /* ── PROGRESS BAR ───────────────────────────────────────────────────────── */
+    .progress-section {
+      margin-bottom: 20px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--color-gray);
+      border: 2px solid var(--color-black);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* ── CONTROLS ───────────────────────────────────────────────────────────── */
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px;
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #startBtn {
+      background: var(--color-success);
+      color: var(--color-white);
+      box-shadow: var(--shadow-hard);
+    }
+
+    #startBtn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hard-hover);
+    }
+
+    #startBtn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #stopBtn {
+      background: var(--color-danger);
+      color: var(--color-white);
+      box-shadow: var(--shadow-hard);
+    }
+
+    #stopBtn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hard-hover);
+    }
+
+    #stopBtn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* ── SECONDARY BUTTONS ──────────────────────────────────────────────────── */
+    .secondary-btn {
+      background: var(--color-white);
+      color: var(--color-primary);
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .secondary-btn:hover:not(:disabled) {
+      background: rgba(51, 204, 255, 0.1);
+      transform: translate(-2px, -2px);
+    }
+
+    /* ── LOG SECTION ────────────────────────────────────────────────────────── */
+    #log {
+      background: var(--color-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 11px;
+      font-family: 'Courier New', monospace;
+      box-shadow: var(--shadow-hard);
+    }
+
+    #log p {
+      margin: 4px 0;
+      padding: 4px 8px;
+      border-left: 3px solid var(--color-gray);
+      padding-left: 8px;
+    }
+
+    #log p:last-child {
+      margin-bottom: 0;
+    }
+
+    .log-success {
+      color: var(--color-success);
+      border-left-color: var(--color-success);
+    }
+
+    .log-error {
+      color: var(--color-danger);
+      border-left-color: var(--color-danger);
+    }
+
+    .log-info {
+      color: var(--color-primary);
+      border-left-color: var(--color-primary);
+    }
+
+    .log-warning {
+      color: var(--color-accent);
+      border-left-color: var(--color-accent);
+    }
+
+    /* ── ALERT ──────────────────────────────────────────────────────────────── */
+    .alert {
+      background: var(--color-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .alert-warning {
+      background: rgba(255, 204, 51, 0.1);
+      border-color: var(--color-accent);
+    }
+
+    .alert-error {
+      background: rgba(255, 51, 102, 0.1);
+      border-color: var(--color-danger);
+    }
+
+    .alert-success {
+      background: rgba(51, 204, 102, 0.1);
+      border-color: var(--color-success);
+    }
+
+    .alert-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .alert-message {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── AUTH SECTION ───────────────────────────────────────────────────────── */
+    .auth-section {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .auth-btn {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: var(--border-thick);
+      padding: 16px !important;
+      font-size: 15px !important;
+      width: 100%;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .auth-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hard-hover);
+    }
+
+    .auth-note {
+      font-size: 11px;
+      color: var(--color-black);
+      opacity: 0.7;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── SETTINGS SECTION ───────────────────────────────────────────────────── */
+    .setting-group {
+      background: var(--color-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .setting-label {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--color-black);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 13px;
+      background: var(--color-bg);
+      margin-bottom: 8px;
+    }
+
+    .balance-row,
+    .checkbox-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .checkbox-row input {
+      margin-right: 10px;
+      width: auto;
+      height: auto;
+    }
+
+    .setting-value {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-black);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      background: var(--color-white);
+      box-shadow: var(--shadow-hard);
+    }
+
+    /* ── SCROLLBAR ──────────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--color-gray);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-secondary);
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-icon">🚀</div>
+    <div class="header-content">
+      <h1>Vyral</h1>
+      <p>Growth OS - Powered by ICP</p>
+    </div>
+  </div>
+
+  <!-- CONTAINER -->
+  <div class="container">
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+      <button class="tab-btn" data-tab="logs">Logs</button>
+    </div>
+
+    <!-- TAB: DASHBOARD -->
+    <div id="dashboard" class="tab-content active">
+      <div id="authContainer" class="auth-section">
+        <button id="authBtn" class="auth-btn">Connect to Vyrall Wallet</button>
+        <button id="refreshBalanceBtn" class="secondary-btn" style="margin-top: 10px;">Refresh Vyrall Wallet Balance</button>
+        <p class="auth-note">
+          🔌 Open the Vyrall wallet page in a tab, complete your account connection there, then refresh the balance here.
+          Once connected, return to TikTok and start the unfollow session.
+        </p>
+      </div>
+
+      <div id="userContainer" style="display: none;">
+        <!-- Status Card -->
+        <div class="status-card">
+          <div class="status-item">
+            <span class="status-label">Status</span>
+            <span class="status-value" id="statusText">Ready</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Vyral Status</span>
+            <span class="status-value" id="vyralStatusText">Not connected</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">TikTok Handle</span>
+            <span class="status-value" id="tikTokHandle">—</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Unfollowed</span>
+            <span class="status-value" id="unfollowedCount">0</span>
+          </div>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+          <div class="balance-label">ICP Balance</div>
+          <div class="balance-amount" id="icpBalance">0.00</div>
+          <div class="balance-unit">Internet Computer Tokens</div>
+          <div class="balance-row">
+            <span class="setting-label">Price per unfollow</span>
+            <span class="status-value">$0.03</span>
+          </div>
+          <div class="balance-row">
+            <span class="setting-label">ICP per unfollow</span>
+            <span class="status-value" id="pricePerUnfollowIcp">—</span>
+          </div>
+          <div class="balance-row">
+            <span class="setting-label">ICP/USD rate</span>
+            <span class="status-value" id="icpPriceUsd">—</span>
+          </div>
+          <button class="secondary-btn" id="depositBtn">+ Deposit ICP</button>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+          <div class="progress-label">
+            <span>Session Progress</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div class="progress-label" style="justify-content: space-between; margin-top: 4px;">
+            <span><span id="unfollowedProgress">0</span> done</span>
+            <span>of <span id="toUnfollowCount">0</span></span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+          <button id="startBtn" class="btn-primary">▶ Start</button>
+          <button id="stopBtn" class="btn-secondary" disabled>◼ Stop</button>
+        </div>
+
+        <!-- Alerts -->
+        <div id="alertContainer"></div>
+      </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div id="settings" class="tab-content">
+      <div class="setting-group">
+        <div class="setting-label">TikTok Handle</div>
+        <input type="text" id="tikTokInput" placeholder="@yourhandle">
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label" for="lockTabCheckbox">Lock TikTok Tab</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="lockTabCheckbox">
+          <label for="lockTabCheckbox">Keep the TikTok tab active while automation runs</label>
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <div class="setting-label">Fixed Price</div>
+        <div class="setting-value">$0.03 USD per unfollow</div>
+      </div>
+
+      <div class="setting-group">
+        <button id="saveSettingsBtn" style="background: var(--color-primary); color: white; margin: 0;">
+          💾 Save Settings
+        </button>
+      </div>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Disclaimer</div>
+        <div class="alert-message">
+          Use this tool responsibly. Unfollowing too quickly may trigger TikTok's rate limiting or temporary account restrictions.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: LOGS -->
+    <div id="logs" class="tab-content">
+      <div id="log" style="margin: 0;"></div>
+      <button id="clearLogsBtn" class="secondary-btn" style="margin-top: 12px;">🗑️ Clear Logs</button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="popup.js"></script>
+</body>
+</html>
