@@ -4,6 +4,7 @@ import "./globals.css";
 import { WalletProvider } from '@/context/WalletContext';
 import { UserProvider } from '@/context/UserContext';
 import { AdminProvider } from '@/context/AdminContext';
+import { Toaster } from '@/components/ui/toaster';
 
 const fredoka = Fredoka({
   variable: "--font-display",
@@ -112,6 +113,7 @@ export default function RootLayout({
             <AdminProvider>{children}</AdminProvider>
           </UserProvider>
         </WalletProvider>
+        <Toaster />
       </body>
     </html>
   );

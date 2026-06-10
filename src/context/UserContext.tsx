@@ -50,8 +50,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         
         if (createError) {
           console.error('Error creating user:', createError);
+          console.error('Create error details:', JSON.stringify(createError, null, 2));
           setUser(null);
-        } else {
+        } else if (newUser) {
           setUser(newUser);
         }
       } else {
