@@ -295,3 +295,7 @@ If you have any questions or need help:
 ---
 
 Built with ❤️ by the Vyral Team
+=======
+# vyral
+a vyral challenges and rewards marketplace and tools
+>>>>>>> origin/main
